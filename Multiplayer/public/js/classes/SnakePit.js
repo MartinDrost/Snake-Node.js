@@ -2,8 +2,8 @@ function SnakePit (canvas)
 {
     this.canvas = canvas;
     this.context = this.canvas.getContext("2d");
-    this.mapWidth = 500;
-    this.mapHeight = 500;
+    this.mapWidth = 1000;
+    this.mapHeight = 550;
     this.snakes = [];
     this.food = [];
 
@@ -30,11 +30,15 @@ SnakePit.prototype.draw = function() {
 	for(var i = 0, l = this.snakes.length; i < l; i++)
 	{
 		var snake = this.snakes[i];
+
 		this.context.fillStyle = snake.color;
+		if(snake.state == State.dead)
+			this.context.fillStyle = "#95a5a6";
+
 		for(var j = 0, m = snake.segments.length; j < m; j++)
 		{
 			var segment = snake.segments[j];
-			this.context.fillRect(segment.x+1, segment.y+1, segment.width-2, segment.height-2);
+			this.context.fillRect(segment.x, segment.y, segment.width, segment.height);
 		}
 	}
 
@@ -43,17 +47,16 @@ SnakePit.prototype.draw = function() {
 	for(var i = 0, l = this.food.length; i < l; i++)
 	{
 		var food = this.food[i];
-		this.context.fillRect(food.x+1, food.y+1, food.width-2, food.height-2);
+		this.context.fillRect(food.x, food.y, food.width, food.height);
 	}
 
-	//Draw dead heads
-	this.context.fillStyle = "#FF0000";
+	//Draw darker heads
+	this.context.fillStyle = "rgba(0,0,0,0.2)";
 	for(var i = 0, l = this.snakes.length; i < l; i++)
 	{
 		var snake = this.snakes[i],
 			segment = snake.segments[0];
 
-		if(snake.state == State.dead)
-			this.context.fillRect(segment.x+1, segment.y+1, segment.width-2, segment.height-2);
+			this.context.fillRect(segment.x, segment.y, segment.width, segment.height);
 	}
 };

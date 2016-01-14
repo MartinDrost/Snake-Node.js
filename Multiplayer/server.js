@@ -7,7 +7,8 @@ var app = require("express")(),
 
 //modules
 var SnakeServer = require('./modules/SnakeServer.js'),
-	game = new SnakeServer();
+	game = new SnakeServer(io),
+	connected = 0;
 
 //Define routing
 app.use(express.static(__dirname + "/public"));
@@ -24,6 +25,7 @@ setInterval(function()
 
 io.on("connection", function(socket)
 {
+
 	socket.userId = UUID();
 
 	console.log("New connection: " + socket.userId);
@@ -31,14 +33,30 @@ io.on("connection", function(socket)
 
 	socket.on("addPlayer", function(data)
 	{
-		if(socket.name || game.getSnakeByName(data.name))
-			return;
+		var name = data.name.substring(0,10);
+		if(socket.name)
+			return socket.emit("dialog", {message: "You have already registered a name."});
+		if(!name)
+			return socket.emit("dialog", {message: "You have to input a name."});
+		if(game.getSnakeByName(name))
+			return socket.emit("dialog", {message: "That name is already in use."});
 
-		socket.name = data.name;
+
+		socket.name = name;
 		socket.color = data.color;
 
 		console.log("New snake: " + socket.name);
 		game.addPlayer(socket.name, socket.color);
+
+		connected++;
+		io.emit("numberOfConnections", {connections: connected})
+		io.emit("newChatMessage", {
+			name: socket.name,
+			color: socket.color, 
+			message: "Has joined.",
+			time: new Date()
+		});
+		socket.emit("joinedGame");
 	});
 
 
@@ -48,12 +66,30 @@ io.on("connection", function(socket)
 	});
 
 
+	socket.on("sendChatMessage", function(data)
+	{
+		if(!socket.name)
+			return socket.emit("dialog", {message: "You need to join the game before you can send messages."});
+
+		console.log("[Chat] " + socket.name + ": " + data.message);
+		io.emit("newChatMessage", {
+			name: socket.name,
+			color: socket.color, 
+			message: data.message,
+			time: new Date()
+		});
+	});
+
+
+
 	socket.on("disconnect", function()
 	{
-
+		if(socket.name)
+			connected--;
 		console.log(socket.name + " has disconnected.");
-		
-		game.removeSnakeByName(socket.name);
+		io.emit("numberOfConnections", {connections: connected})
+		game.removePlayerByName(socket.name);
+		game.killSnakeByName(socket.name);
 	});
 });
 

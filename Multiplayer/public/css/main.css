@@ -1,4 +1,156 @@
+body
+{
+	background-color: #eee;
+	font-size: 12px;
+}
+
+.flex
+{
+    display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custom-card
+{
+	background-color: #fff;
+	border-radius: 3px;
+    transition: .3s all;
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+	position: relative;
+}
+.custom-card h5
+{
+	font-size: 14px;
+	border-bottom: 1px solid #eee;
+	padding: 20px;
+	margin: 0px;
+}
+
+header
+{
+	height: 100px;
+	background-color: #16a085;
+	margin-bottom: 30px;
+
+	font-family: "Montserrat";
+	color: #FFF;
+	font-size: 18px;
+}
+
+.header-logo
+{
+	margin: 36px 20px;
+	float: left;
+}
+
+.header-players
+{
+	margin: 39px 20px;
+	float: right;
+	font-size: 14px;
+}
+
+.wrapper
+{
+	width: 1230px;
+	margin: 0px auto;
+}
+
+.game-container 
+{
+	width: 1000px;
+	margin-right: 20px;
+}
+.login-container
+{
+	height: 550px;
+	position: absolute;
+	width:1000px;
+	bottom:0px;
+	background-color: rgba(255,255,255,0.9);
+}
+.login-form
+{
+	width: 160px;
+	height: 120px;
+}
+#player-color-input
+{
+	width: 100%;
+	margin-bottom: 20px;
+}
+#join-game-button
+{
+	width: 100%;
+}
+
+.chat-container
+{
+	width: 210px;
+}
+
 canvas
 {
-	border: 1px solid #000;
+}
+
+.chat-messages
+{
+	height: 499px;
+	overflow: hidden;
+}
+.chat-message
+{
+	padding: 20px;
+	border-bottom: 1px solid #eee;
+}
+.message-color
+{
+	background-color: #95a5a6;
+	height: 8px;
+	width: 10px;
+	border-radius: 10px;
+	margin-right: 20px;
+}
+.message-content
+{
+	width: 100%;
+}
+.message-details
+{
+	margin-bottom: 5px;
+}
+.message-time
+{
+	display: inline-block;
+	float: right;
+	color: #8e8e8e;
+}
+
+
+.chat-input
+{
+	height: 51px;
+	border-top: 1px solid #eee;
+	background-color: #f5f5f5;
+	padding: 0px 20px;
+}
+#chat-input
+{
+	border-bottom-width: 0;
+	box-shadow: none;
+	font-size: 12px;
+	margin:  2px 10px 0 0;
+}
+#send-chat-message
+{
+	font-size: 18px;
+	color: #c8c8c8;
+	margin: 16px 0px;
+	cursor: pointer;
+	transition: .3s all;
+}
+#send-chat-message:hover
+{
+	color: #777;
 }

@@ -2,14 +2,67 @@
 <head>
 	<title>
 	</title>
+	<link href="./css/materialize.min.css" type="text/css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
-	<canvas id="snake-canvas" width=500 height=500>
+	<header>
+		<div class="wrapper">
+			<div class="header-logo">
+				Snake_
+			</div>
+			<div class="header-players">
+				<span id="online-players">0</span> players
+			</div>
+		</div>
+	</header>
 
-	</canvas>
+	<div class="wrapper flex">
+		<section class="custom-card game-container">
+			<h5>
+				Game
+			</h5>
+			<div class="login-container flex">
+				<div class='login-form'>
+					<input type="text" placeholder="Username" id="player-name-input">
+					<select id="player-color-input">
+				      <option value="" disabled selected>Color</option>
+				      <option value="#3498db">Blue</option>
+				      <option value="#e74c3c">Red</option>
+				      <option value="#e67e22">Orange</option>
+				      <option value="#9b59b6">Purple</option>
+				      <option value="#1abc9c">Turqouise</option>
+				      <option value="#2ecc71">Green</option>
+				    </select>
+					<button class="waves-effect waves-light btn" id="join-game-button">
+						Join game
+					</button>
+				</div>
+			</div>
+			<canvas id="snake-canvas" width=1000 height=550>
+
+			</canvas>
+		</section>
+
+		<section class="custom-card chat-container">
+			<h5>
+				Chat
+			</h5>
+			<div class="chat-messages">
+			</div>
+			<div class="chat-input flex">
+				<input type="text" id="chat-input" placeholder="Type your message..">
+				<i id="send-chat-message" class="material-icons">send</i>
+			</div>
+		</section>
+	</div>
+
+	<!-- Load remaining resources -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Montserrat|Roboto:400,300,500' rel='stylesheet' type='text/css'>
 
 	<script src="./js/jquery-2.2.0.min.js"></script>
+	<script src="./js/materialize.min.js"></script>
 	<script src="./js/socket.io-1.4.3.js"></script>
 	<script src="./js/classes/Controls.js"></script>
 	<script src="./js/classes/Direction.js"></script>

@@ -5,26 +5,74 @@ var Controls = require("./Controls.js"),
 	Snake = require("./Snake.js"),
 	SnakeSegment = require("./SnakeSegment.js");
 
-module.exports = function () 
+module.exports = function (io) 
 {
-    this.mapWidth = 500;
-    this.mapHeight = 500;
+	this.io = io;
+    this.mapWidth = 1000;
+    this.mapHeight = 550;
+    this.players = [];
     this.snakes = [];
     this.food = [];
-
-    this.addFood();
 
     var $this = this;
     setInterval(function()
 	{
 		$this.update();
+		$this.checkGameStatus();
 	}, 100);
+    setInterval(function()
+	{
+		$this.addSegments();
+	}, 3000);
 }
+
+module.exports.prototype.startGame = function(name, color) {
+    this.snakes = [];
+    for(var i = 0, l = this.players.length; i < l; i++)
+    {
+		var spawnPoint = this.getSpawnPoint();
+		this.snakes.push(new Snake(this.players[i].name, spawnPoint[0], spawnPoint[1], this.players[i].color));
+    }
+
+    this.food = [];
+    this.addFood();
+};
+
+module.exports.prototype.checkGameStatus = function() {
+    var snakesAlive = [];
+    for(var i = 0, l = this.snakes.length; i < l; i++)
+    {
+    	if(this.snakes[i].state != State.dead)
+    	{
+    		snakesAlive.push(this.snakes[i]);
+    	}
+    }
+
+
+    if(snakesAlive.length < 2 && this.players.length > 1)
+    {
+    	this.startGame();
+    	if(snakesAlive.length == 1)
+    		this.io.emit("dialog", {message: snakesAlive[0].name + " wins!"});
+    	else
+    		this.io.emit("dialog", {message: "Tie!"});
+
+    }
+};
+
  
 module.exports.prototype.addPlayer = function(name, color) {
 	var spawnPoint = this.getSpawnPoint();
 
-	this.snakes.push(new Snake(name, spawnPoint[0], spawnPoint[1], color));
+	this.players.push(new Snake(name, spawnPoint[0], spawnPoint[1], color));
+};
+
+module.exports.prototype.addSegments = function() {
+    for(var i = 0, l = this.snakes.length; i < l; i++)
+    {
+    	if(this.snakes[i].state != State.dead)
+    		this.snakes[i].addSegment();
+    }
 };
  
 module.exports.prototype.addFood = function() {
@@ -218,17 +266,18 @@ module.exports.prototype.getSnakeByName = function(name) {
 	return snake;
 };
  
-module.exports.prototype.removeSnakeByName = function(name) {
-	var snake = null;
-	for(var i = 0, l = this.snakes.length; i < l; i++)
+module.exports.prototype.killSnakeByName = function(name) {
+	(this.getSnakeByName(name) || {}).state = State.dead;
+};
+ 
+module.exports.prototype.removePlayerByName = function(name) {
+	for(var i = 0, l = this.players.length; i < l; i++)
 	{
-		var current = this.snakes[i];
+		var current = this.players[i];
 		if(current.name == name)
 		{
-			this.snakes.splice(i, 1);
+			this.players.splice(i, 1);
 			break;
 		}
 	}
-
-	return snake;
 };
