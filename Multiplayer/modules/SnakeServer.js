@@ -30,7 +30,7 @@ module.exports.prototype.addPlayer = function(name, color) {
 module.exports.prototype.addFood = function() {
 	var spawnPoint = this.getSpawnPoint();
 
-	this.food.push(new Food(spawnPoint[0], spawnPoint[1], 20, 20));
+	this.food.push(new Food(spawnPoint[0], spawnPoint[1], 10, 10));
 };
  
 module.exports.prototype.processControl = function(key, name) {
@@ -110,8 +110,15 @@ module.exports.prototype.checkCollisions = function() {
 			segment = snake.segments[0];
 
 		//Check wall collisions
-		if(segment.x < 0 || segment.x >= this.mapWidth || segment.y < 0 || segment.y >= this.mapHeight)
-			snake.state = State.dead;
+		if(segment.x < 0)
+			segment.x = this.mapWidth - segment.width;
+		if(segment.x >= this.mapWidth) 
+			segment.x = 0;
+		if(segment.y < 0) 
+			segment.y = this.mapHeight - segment.height;
+		if(segment.y >= this.mapHeight)
+			segment.y = 0;
+
 
 
 		//Check snake collissions
@@ -156,9 +163,9 @@ module.exports.prototype.getSpawnPoint = function() {
 		distances = [],
 		counter = 0;
 
-	for(var y = 0, yLength = this.mapHeight; y < yLength; y += 20)
+	for(var y = 0, yLength = this.mapHeight; y < yLength; y += 10)
 	{
-		for(var x = 0, xLength = this.mapWidth; x < xLength; x += 20)
+		for(var x = 0, xLength = this.mapWidth; x < xLength; x += 10)
 		{
 			for(var snakeIndex = 0, snakeLength = this.snakes.length; snakeIndex < snakeLength; snakeIndex++)
 			{

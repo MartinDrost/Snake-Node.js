@@ -9,7 +9,7 @@ module.exports = function (name, x, y, color)
     this.score = 0;
     this.color = color;
     this.state = State.alive;
-    this.segments = [new SnakeSegment(x, y, 20, 20)];
+    this.segments = [new SnakeSegment(x, y, 10, 10)];
 }
  
 module.exports.prototype.setDirection = function(direction) {
