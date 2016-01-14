@@ -7,11 +7,7 @@ function SnakePit (canvas)
     this.snakes = [];
     this.food = [];
 
-    var $this = this;
-    setInterval(function()
-	{
-		$this.draw();
-	}, 1000/60);
+    window.requestAnimationFrame(this.draw.bind(this));
 }
  
 SnakePit.prototype.addPlayer = function(name, color) {
@@ -59,4 +55,10 @@ SnakePit.prototype.draw = function() {
 
 			this.context.fillRect(segment.x, segment.y, segment.width, segment.height);
 	}
+
+	var $this = this;
+	setTimeout(function()
+	{
+		requestAnimationFrame($this.draw.bind($this))
+	},16);
 };

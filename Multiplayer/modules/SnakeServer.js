@@ -19,7 +19,7 @@ module.exports = function (io)
 	{
 		$this.update();
 		$this.checkGameStatus();
-	}, 200);
+	}, 100);
     setInterval(function()
 	{
 		$this.addSegments();
