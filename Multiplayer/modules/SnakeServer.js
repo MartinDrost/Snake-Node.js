@@ -19,11 +19,11 @@ module.exports = function (io)
 	{
 		$this.update();
 		$this.checkGameStatus();
-	}, 100);
+	}, 200);
     setInterval(function()
 	{
 		$this.addSegments();
-	}, 3000);
+	}, 2000);
 }
 
 module.exports.prototype.startGame = function(name, color) {
@@ -36,6 +36,17 @@ module.exports.prototype.startGame = function(name, color) {
 
     this.food = [];
     this.addFood();
+
+    //Move snakes which havent move after 3 seconds
+    var $this = this;
+    setTimeout(function()
+    {
+	    for(var i = 0, l = $this.snakes.length; i < l; i++)
+	    {
+			if($this.snakes[i].segments[0].direction == Direction.none)
+				$this.snakes[i].segments[0].direction = Math.round(Math.random()*3)+1;
+	    }
+    }, 3000)
 };
 
 module.exports.prototype.checkGameStatus = function() {
@@ -102,7 +113,7 @@ module.exports.prototype.processControl = function(key, name) {
 			snake.setDirection(Direction.right);
 			break;
 		case Controls.space:
-			snake.addSegment(); //DEBUG CODE
+			//snake.addSegment(); //DEBUG CODE
 			break;
 	}
 };
@@ -147,6 +158,7 @@ module.exports.prototype.moveSnakes = function() {
 				}
 			}
 		}
+		//snake.addSegment(); //Uncomment for continoues painting.
 	};
 };
  

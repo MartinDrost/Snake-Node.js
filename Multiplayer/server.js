@@ -37,9 +37,11 @@ io.on("connection", function(socket)
 		if(socket.name)
 			return socket.emit("dialog", {message: "You have already registered a name."});
 		if(!name)
-			return socket.emit("dialog", {message: "You have to input a name."});
+			return socket.emit("dialog", {message: "You have to define a name."});
 		if(game.getSnakeByName(name))
 			return socket.emit("dialog", {message: "That name is already in use."});
+		if(!data.color)
+			return socket.emit("dialog", {message: "You have to define a color."});
 
 
 		socket.name = name;
