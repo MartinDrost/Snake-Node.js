@@ -293,3 +293,8 @@ module.exports.prototype.removePlayerByName = function(name) {
 		}
 	}
 };
+
+module.exports.prototype.getGameState = function()
+{
+	return {snakes: this.snakes, food: this.food};
+}

@@ -1,5 +1,6 @@
 var snakePit;
 var socket = io.connect('/');
+var compress = new Compress();
 
 $(document).ready(function()
 {
@@ -26,8 +27,9 @@ socket.on('numberOfConnections', function( data ) {
 });
 
 socket.on('update', function( data ) {
-	snakePit.snakes = data.snakes;
-	snakePit.food = data.food;
+	var gameState = compress.decodeGameState(data);
+	snakePit.snakes = gameState.snakes;
+	snakePit.food = gameState.food;
 });
 
 socket.on('dialog', function( data ) {

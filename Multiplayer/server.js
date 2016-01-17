@@ -7,6 +7,7 @@ var app = require("express")(),
 
 //modules
 var SnakeServer = require('./modules/SnakeServer.js'),
+	Compress = new (require('./modules/Compress.js'))(),
 	game = new SnakeServer(io),
 	connected = 0;
 
@@ -20,7 +21,8 @@ app.get("/", function(request, response)
 
 setInterval(function()
 {
-	io.emit("update", {snakes: game.snakes, food: game.food});
+	var gameState = Compress.encodeGameState(game.getGameState());
+	io.emit("update", gameState);
 }, 100);
 
 io.on("connection", function(socket)
