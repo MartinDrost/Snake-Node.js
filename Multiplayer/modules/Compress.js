@@ -73,8 +73,8 @@ module.exports.prototype.encodeGameState = function( state )
 		{
 			var segment = snake.segments[j];
 			msg += this.encodeUint8( segment.direction );
-			msg += this.encodeUint8( segment.x );
-			msg += this.encodeUint8( segment.y );
+			msg += this.encodeFloat32( segment.x );
+			msg += this.encodeFloat32( segment.y );
 			msg += this.encodeUint8( segment.width );
 			msg += this.encodeUint8( segment.height );
 		}
@@ -84,8 +84,8 @@ module.exports.prototype.encodeGameState = function( state )
 	for ( var i = 0, l = state.food.length; i < l; i++ ) {
 		var food = state.food[i];
 
-		msg += this.encodeUint8( food.x );
-		msg += this.encodeUint8( food.y );
+		msg += this.encodeFloat32( food.x );
+		msg += this.encodeFloat32( food.y );
 		msg += this.encodeUint8( food.width );
 		msg += this.encodeUint8( food.height );
 	}
@@ -126,8 +126,8 @@ module.exports.prototype.decodeGameState = function( str )
 			{
 				var segment = {};
 				charsRead += this.decodeUint8( str, charsRead, segment, 'direction' );
-				charsRead += this.decodeUint8( str, charsRead, segment, 'x' );
-				charsRead += this.decodeUint8( str, charsRead, segment, 'y' );
+				charsRead += this.decodeFloat32( str, charsRead, segment, 'x' );
+				charsRead += this.decodeFloat32( str, charsRead, segment, 'y' );
 				charsRead += this.decodeUint8( str, charsRead, segment, 'width' );
 				charsRead += this.decodeUint8( str, charsRead, segment, 'height' );
 
@@ -141,8 +141,8 @@ module.exports.prototype.decodeGameState = function( str )
 		for(var i = 0; i < lengths.food; i++)
 		{
 			var food = {};
-			charsRead += this.decodeUint8( str, charsRead, food, 'x' );
-			charsRead += this.decodeUint8( str, charsRead, food, 'y' );
+			charsRead += this.decodeFloat32( str, charsRead, food, 'x' );
+			charsRead += this.decodeFloat32( str, charsRead, food, 'y' );
 			charsRead += this.decodeUint8( str, charsRead, food, 'width' );
 			charsRead += this.decodeUint8( str, charsRead, food, 'height' );
 
