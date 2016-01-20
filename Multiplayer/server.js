@@ -57,9 +57,10 @@ io.on("connection", function(socket)
 		io.emit("newChatMessage", {
 			name: socket.name,
 			color: socket.color, 
-			message: "Has joined.",
+			message: "has joined.",
 			time: new Date()
 		});
+
 		socket.emit("joinedGame");
 	});
 
@@ -74,6 +75,8 @@ io.on("connection", function(socket)
 	{
 		if(!socket.name)
 			return socket.emit("dialog", {message: "You need to join the game before you can send messages."});
+		if(!data.message)
+			return socket.emit("dialog", {message: "You need to enter a message before you can send."});
 
 		console.log("[Chat] " + socket.name + ": " + data.message);
 		io.emit("newChatMessage", {
@@ -89,7 +92,17 @@ io.on("connection", function(socket)
 	socket.on("disconnect", function()
 	{
 		if(socket.name)
+		{
 			connected--;
+
+			io.emit("newChatMessage", {
+				name: socket.name,
+				color: socket.color, 
+				message: "has left.",
+				time: new Date()
+			});
+		}
+
 		console.log(socket.name + " has disconnected.");
 		io.emit("numberOfConnections", {connections: connected})
 		game.removePlayerByName(socket.name);

@@ -68,7 +68,7 @@ Compress.prototype.encodeGameState = function( state )
 		msg += this.encodeString( snake.color );
 		msg += this.encodeUint8( snake.score );
 		msg += this.encodeUint8( snake.state );
-		msg += this.encodeUint8( snake.segments.length );
+		msg += this.encodeFloat32( snake.segments.length );
 		for(var j = 0; j < snake.segments.length; j++)
 		{
 			var segment = snake.segments[j];
@@ -121,7 +121,7 @@ Compress.prototype.decodeGameState = function( str )
 
 			charsRead += this.decodeUint8( str, charsRead, snake, 'score' );
 			charsRead += this.decodeUint8( str, charsRead, snake, 'state' );
-			charsRead += this.decodeUint8( str, charsRead, lengths, 'segments' );
+			charsRead += this.decodeFloat32( str, charsRead, lengths, 'segments' );
 			for(var j = 0; j < lengths.segments; j++)
 			{
 				var segment = {};

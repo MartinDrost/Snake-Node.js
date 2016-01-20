@@ -43,8 +43,8 @@ module.exports.prototype.startGame = function(name, color) {
     {
 	    for(var i = 0, l = $this.snakes.length; i < l; i++)
 	    {
-			if($this.snakes[i].segments[0].direction == Direction.none)
-				$this.snakes[i].segments[0].direction = Math.round(Math.random()*3)+1;
+			if($this.snakes[i].direction == Direction.none)
+				$this.snakes[i].direction = Math.round(Math.random()*3)+1;
 	    }
     }, 3000)
 };
@@ -67,7 +67,6 @@ module.exports.prototype.checkGameStatus = function() {
     		this.io.emit("dialog", {message: snakesAlive[0].name + " wins!"});
     	else
     		this.io.emit("dialog", {message: "Tie!"});
-
     }
 };
 
@@ -123,9 +122,10 @@ module.exports.prototype.moveSnakes = function() {
 	{
 		var snake = this.snakes[i];
 
-		if(snake.segments[0].direction == Direction.none || snake.state == State.dead)
+		if(snake.direction == Direction.none || snake.state == State.dead)
 			continue;
 
+		snake.segments[0].direction = snake.direction;
 		for(var j = snake.segments.length - 1; j >= 0; j--)
 		{
 			var segment = snake.segments[j],
@@ -238,6 +238,22 @@ module.exports.prototype.getSpawnPoint = function() {
 					if(distances[counter] == undefined || distance < distances[counter])
 						distances[counter] = distance;
 				}
+
+
+				var distance;
+				distance = Math.abs(0 - x) + Math.abs(0 - y);			
+				if(distances[counter] == undefined || distance < distances[counter])
+					distances[counter] = distance;
+				distance = Math.abs(this.mapWidth - x) + Math.abs(0 - y);			
+				if(distances[counter] == undefined || distance < distances[counter])
+					distances[counter] = distance;
+				distance = Math.abs(0 - x) + Math.abs(this.mapHeight - y);			
+				if(distances[counter] == undefined || distance < distances[counter])
+					distances[counter] = distance;
+				distance = Math.abs(this.mapWidth - x) + Math.abs(this.mapHeight - y);			
+				if(distances[counter] == undefined || distance < distances[counter])
+					distances[counter] = distance;
+				
 			}
 			points[counter] = [x, y];
 			counter++;

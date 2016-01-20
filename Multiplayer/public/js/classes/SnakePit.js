@@ -22,6 +22,7 @@ SnakePit.prototype.draw = function() {
 	//Reset canvas
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+	this.context.font = "10px Roboto";
 	//Draw snakes
 	for(var i = 0, l = this.snakes.length; i < l; i++)
 	{
@@ -30,6 +31,11 @@ SnakePit.prototype.draw = function() {
 		this.context.fillStyle = snake.color;
 		if(snake.state == State.dead)
 			this.context.fillStyle = "#95a5a6";
+
+
+		var textX = snake.segments[0].x - this.context.measureText(snake.name).width / 2 + 5,
+			textY = snake.segments[0].y - 10;
+		this.context.fillText(snake.name, textX, textY);
 
 		for(var j = 0, m = snake.segments.length; j < m; j++)
 		{

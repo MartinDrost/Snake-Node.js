@@ -10,6 +10,7 @@ module.exports = function (name, x, y, color)
     this.color = color;
     this.state = State.alive;
     this.segments = [new SnakeSegment(x, y, 10, 10)];
+    this.direction = Direction.none;
 }
  
 module.exports.prototype.setDirection = function(direction) {
@@ -19,19 +20,19 @@ module.exports.prototype.setDirection = function(direction) {
 	{
 		case Direction.up:
 			if(segment.direction != Direction.down)
-				segment.direction = direction;
+				this.direction = direction;
 			break;
 		case Direction.down:
 			if(segment.direction != Direction.up)
-				segment.direction = direction;
+				this.direction = direction;
 			break;
 		case Direction.left:
 			if(segment.direction != Direction.right)
-				segment.direction = direction;
+				this.direction = direction;
 			break;
 		case Direction.right:
 			if(segment.direction != Direction.left)
-				segment.direction = direction;
+				this.direction = direction;
 			break;
 	}
 };
