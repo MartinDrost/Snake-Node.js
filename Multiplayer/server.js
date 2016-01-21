@@ -3,7 +3,8 @@ var app = require("express")(),
 	io = require("socket.io")(http),
 	express = require("express"),
 	gameport = process.env.PORT || 4004,
-	UUID = require('node-uuid');
+	UUID = require('node-uuid'),
+	sanitize = require('google-caja').sanitize;
 
 //modules
 var SnakeServer = require('./modules/SnakeServer.js'),
@@ -35,6 +36,9 @@ io.on("connection", function(socket)
 
 	socket.on("addPlayer", function(data)
 	{
+		data.name = sanitize(data.name);
+		data.color = sanitize(data.color);
+		
 		var name = data.name.substring(0,10);
 		if(socket.name)
 			return socket.emit("dialog", {message: "You have already registered a name."});
@@ -73,6 +77,8 @@ io.on("connection", function(socket)
 
 	socket.on("sendChatMessage", function(data)
 	{
+		data.message = sanitize(data.message);
+
 		if(!socket.name)
 			return socket.emit("dialog", {message: "You need to join the game before you can send messages."});
 		if(!data.message)
