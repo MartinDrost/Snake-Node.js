@@ -6,9 +6,6 @@ var app = require("express")(),
   UUID = require("node-uuid"),
   sanitize = require("google-caja").sanitize;
 
-io.set("transports", ["xhr-polling"]);
-io.set("polling duration", 10);
-
 //modules
 var SnakeServer = require("./modules/SnakeServer.js"),
   Compress = new (require("./modules/Compress.js"))(),
